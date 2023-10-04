@@ -24,16 +24,24 @@ fruit_to_show = my_fruit_list.loc[fruit_selected]
 streamlit.dataframe(fruit_to_show)
 
 streamlit.header('Fruitvice Advice')
+try:
+  fruit_choice = streamlit.text_input('What fruit would you like information about?')
+  if not fruit_choice:
+    streamlit.error('Please select a fruit to get information')
+  else:
+    streamlit.write('You have entered ', fruit_choice)
+    fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+fruit_choice)
+    # JSON Data Normalization 
+    fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
+    # Showing Normalized Data - what does this do?
+    streamlit.dataframe(fruityvice_normalized.set_index('name'))
 
-fruit_choice = streamlit.text_input('What fruit would you like information about?','Kiwi')
-streamlit.write('The user entered ', fruit_choice)
+except URLERROR as e:
+  streamlit.error()
 
-fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+fruit_choice)
 
-# JSON Data Normalization 
-fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
-# Showing Normalized Data - what does this do?
-streamlit.dataframe(fruityvice_normalized.set_index('name'))
+
+
 
 streamlit.stop()
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
