@@ -25,4 +25,9 @@ streamlit.header('Fruitvice Advice')
 fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
 streamlit.text(fruityvice_response.json())
 
+# JSON Data Normalization 
+fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
+# Showing Normalized Data - what does this do?
+streamlit.dataframe(fruityvice_normalized)
+
 
