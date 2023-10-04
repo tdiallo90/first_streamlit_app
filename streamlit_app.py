@@ -28,6 +28,6 @@ streamlit.text(fruityvice_response.json())
 # JSON Data Normalization 
 fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
 # Showing Normalized Data - what does this do?
-streamlit.dataframe(fruityvice_normalized)
+streamlit.dataframe(fruityvice_normalized.set_index('name'))
 
 
